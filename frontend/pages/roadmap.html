@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>로드맵 뷰어 | Job2Roadmap</title>
+  <link rel="stylesheet" href="../css/reset.css">
+  <link rel="stylesheet" href="../css/layout.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/roadmap.css">
+</head>
+<body>
+<header>
+  <div class="container navbar">
+    <a class="brand" href="../index.html">Job2Roadmap</a>
+    <nav class="nav-links">
+      <a href="jd-input.html">로드맵 만들기</a>
+      <a href="roadmap.html">샘플 보기</a>
+      <a href="dashboard.html">기술 트렌드</a>
+      <a href="my-roadmaps.html">내 로드맵</a>
+      <a href="login.html">로그인</a>
+    </nav>
+  </div>
+</header>
+<main>
+  <section class="container">
+    <div class="roadmap-header">
+      <div>
+        <span class="badge">샘플 로드맵</span>
+        <h1 id="roadmapTitle">신입 Java 백엔드 개발자 로드맵</h1>
+      </div>
+      <div class="meta">
+        <span class="badge-pill">총 <strong id="totalWeeks">12</strong>주</span>
+        <span class="badge-pill">하루 <strong id="dailyHours">3</strong>시간 권장</span>
+        <span class="badge-pill">현재 레벨: <strong id="currentLevel">입문자</strong></span>
+      </div>
+      <div class="roadmap-summary">
+        <strong>로드맵 개요</strong>
+        <ul>
+          <li>목표 회사: <span id="targetCompany">미정</span></li>
+          <li>입력 공고: <a id="sourceUrl" href="#" target="_blank">샘플 JD</a></li>
+          <li>생성 일시: <span id="createdAt">2024-03-15</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="progress-summary">
+      <div>
+        <strong id="overallProgress">진행률 0%</strong>
+        <p style="color:var(--muted);">주차별 체크박스를 완료하면 진행률이 업데이트 됩니다.</p>
+      </div>
+      <div class="progress-bar" style="width:260px;">
+        <span id="overallProgressBar" style="width:0%"></span>
+      </div>
+    </div>
+
+    <div class="accordion" id="roadmapAccordion">
+      <!-- Steps injected by JS -->
+    </div>
+
+    <div style="margin-top:2rem;display:flex;gap:1rem;flex-wrap:wrap;">
+      <button class="button primary" id="saveRoadmapBtn">내 로드맵에 저장하기</button>
+      <button class="button secondary" id="shareBtn">공유 링크 복사</button>
+    </div>
+  </section>
+</main>
+<footer>
+  <div class="footer-inner">
+    <strong>Job2Roadmap</strong>
+    <span>나만의 학습 로드맵 보관소</span>
+  </div>
+</footer>
+<script src="../js/api.js"></script>
+<script src="../js/ui.js"></script>
+<script src="../js/pages/roadmap-viewer.js"></script>
+</body>
+</html>

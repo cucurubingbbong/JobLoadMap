@@ -1,0 +1,254 @@
+skills:
+  programming-basics:
+    displayName: "프로그래밍 기초"
+    category: FOUNDATIONAL
+    description: "변수, 조건문, 반복문과 같은 기본 프로그래밍 개념을 이해합니다."
+    estimatedHours: 20
+    prerequisites: []
+    topics:
+      - "변수와 데이터 타입"
+      - "제어문과 반복문"
+      - "기본 디버깅 방법"
+  oop:
+    displayName: "객체지향 프로그래밍"
+    category: FOUNDATIONAL
+    description: "클래스, 객체, 상속, 다형성을 이해하고 활용합니다."
+    estimatedHours: 18
+    prerequisites:
+      - programming-basics
+    topics:
+      - "클래스와 객체"
+      - "상속과 다형성"
+      - "인터페이스 설계"
+  git-basics:
+    displayName: "Git 기본"
+    category: FOUNDATIONAL
+    description: "버전 관리와 협업을 위한 Git 기본 명령을 학습합니다."
+    estimatedHours: 10
+    prerequisites: []
+    topics:
+      - "git init, add, commit"
+      - "브랜치 전략"
+      - "GitHub 활용"
+  http:
+    displayName: "HTTP & 웹 기초"
+    category: FOUNDATIONAL
+    description: "웹이 동작하는 원리와 HTTP 프로토콜을 이해합니다."
+    estimatedHours: 15
+    prerequisites:
+      - programming-basics
+    topics:
+      - "클라이언트-서버 구조"
+      - "HTTP 메서드"
+      - "상태코드"
+  datastructures:
+    displayName: "자료구조"
+    category: FOUNDATIONAL
+    description: "자료구조의 종류와 사용처를 학습합니다."
+    estimatedHours: 22
+    prerequisites:
+      - programming-basics
+    topics:
+      - "배열, 리스트"
+      - "스택, 큐"
+      - "트리, 해시"
+  algorithms:
+    displayName: "알고리즘"
+    category: FOUNDATIONAL
+    description: "문제를 효율적으로 해결하기 위한 알고리즘 사고를 익힙니다."
+    estimatedHours: 25
+    prerequisites:
+      - datastructures
+    topics:
+      - "정렬과 탐색"
+      - "재귀"
+      - "시간 복잡도 분석"
+  java:
+    displayName: "Java 언어"
+    category: CORE
+    description: "Java 언어 문법과 표준 라이브러리를 익힙니다."
+    estimatedHours: 30
+    prerequisites:
+      - programming-basics
+      - oop
+    topics:
+      - "Java 기본 문법"
+      - "컬렉션 프레임워크"
+      - "예외 처리"
+  spring:
+    displayName: "Spring 핵심"
+    category: CORE
+    description: "IoC, DI, AOP 등 Spring 프레임워크의 핵심 개념을 이해합니다."
+    estimatedHours: 28
+    prerequisites:
+      - java
+      - http
+    topics:
+      - "스프링 컨테이너"
+      - "빈 생명주기"
+      - "AOP"
+  spring-boot:
+    displayName: "Spring Boot"
+    category: PRODUCTION
+    description: "Spring Boot를 활용하여 REST API 서버를 개발합니다."
+    estimatedHours: 35
+    prerequisites:
+      - spring
+    topics:
+      - "자동 설정"
+      - "REST 컨트롤러"
+      - "환경 구성"
+  rest-api:
+    displayName: "REST API 설계"
+    category: PRODUCTION
+    description: "RESTful API의 원칙과 문서화를 학습합니다."
+    estimatedHours: 15
+    prerequisites:
+      - http
+    topics:
+      - "자원 기반 설계"
+      - "상태코드와 오류 처리"
+      - "API 문서화"
+  sql:
+    displayName: "SQL & 데이터베이스"
+    category: CORE
+    description: "관계형 데이터베이스와 SQL 기본을 익힙니다."
+    estimatedHours: 25
+    prerequisites:
+      - programming-basics
+    topics:
+      - "SELECT, INSERT"
+      - "JOIN"
+      - "인덱스 기초"
+  mysql:
+    displayName: "MySQL"
+    category: PRODUCTION
+    description: "MySQL을 이용한 데이터 저장과 운영을 경험합니다."
+    estimatedHours: 20
+    prerequisites:
+      - sql
+    topics:
+      - "스키마 설계"
+      - "트랜잭션"
+      - "ORM 연동"
+  junit:
+    displayName: "JUnit 테스트"
+    category: PRODUCTION
+    description: "단위 테스트 자동화와 TDD 기초를 익힙니다."
+    estimatedHours: 12
+    prerequisites:
+      - java
+    topics:
+      - "JUnit5 기본"
+      - "Mockito"
+      - "테스트 작성 패턴"
+  docker:
+    displayName: "Docker"
+    category: BONUS
+    description: "컨테이너를 활용한 배포와 개발 환경 통일을 학습합니다."
+    estimatedHours: 15
+    prerequisites:
+      - rest-api
+    topics:
+      - "Dockerfile 작성"
+      - "이미지 & 컨테이너 관리"
+      - "docker-compose"
+  aws:
+    displayName: "AWS 기초"
+    category: BONUS
+    description: "EC2, RDS 등 AWS 서비스를 활용한 배포를 학습합니다."
+    estimatedHours: 18
+    prerequisites:
+      - docker
+    topics:
+      - "EC2 기본"
+      - "RDS 연결"
+      - "S3 업로드"
+  redis:
+    displayName: "Redis"
+    category: BONUS
+    description: "캐시와 세션 저장소로 Redis를 활용합니다."
+    estimatedHours: 12
+    prerequisites:
+      - spring-boot
+    topics:
+      - "데이터 타입"
+      - "Spring Data Redis"
+      - "캐시 전략"
+  kafka:
+    displayName: "Kafka"
+    category: BONUS
+    description: "이벤트 기반 아키텍처를 위한 Kafka 기본을 이해합니다."
+    estimatedHours: 20
+    prerequisites:
+      - spring-boot
+    topics:
+      - "토픽과 파티션"
+      - "프로듀서/컨슈머"
+      - "Spring Cloud Stream"
+  frontend-basics:
+    displayName: "프론트엔드 기초"
+    category: FOUNDATIONAL
+    description: "HTML, CSS, JavaScript 기초를 학습합니다."
+    estimatedHours: 25
+    prerequisites: []
+    topics:
+      - "HTML 구조"
+      - "CSS Flexbox"
+      - "DOM 조작"
+  react:
+    displayName: "React"
+    category: CORE
+    description: "컴포넌트 기반 UI 라이브러리 React를 학습합니다."
+    estimatedHours: 30
+    prerequisites:
+      - frontend-basics
+      - javascript
+    topics:
+      - "컴포넌트 작성"
+      - "상태 관리"
+      - "라우팅"
+  javascript:
+    displayName: "JavaScript 심화"
+    category: CORE
+    description: "ES6 문법과 비동기 처리 등을 학습합니다."
+    estimatedHours: 28
+    prerequisites:
+      - frontend-basics
+    topics:
+      - "ES6 문법"
+      - "Fetch API"
+      - "모듈 시스템"
+  python:
+    displayName: "Python"
+    category: CORE
+    description: "데이터 분석과 백엔드 개발에 활용되는 Python 언어 기본기를 다집니다."
+    estimatedHours: 24
+    prerequisites:
+      - programming-basics
+    topics:
+      - "Python 문법"
+      - "표준 라이브러리"
+      - "가상환경 & 패키지 관리"
+  testing:
+    displayName: "테스트 & 품질"
+    category: PRODUCTION
+    description: "테스트 자동화와 품질 측정 지표를 학습합니다."
+    estimatedHours: 18
+    prerequisites:
+      - junit
+    topics:
+      - "테스트 전략"
+      - "커버리지"
+      - "CI 연동"
+  ci-cd:
+    displayName: "CI/CD 파이프라인"
+    category: BONUS
+    description: "지속적 통합과 배포 자동화를 이해합니다."
+    estimatedHours: 16
+    prerequisites:
+      - testing
+    topics:
+      - "GitHub Actions"
+      - "배포 자동화"
+      - "환경 변수 관리"

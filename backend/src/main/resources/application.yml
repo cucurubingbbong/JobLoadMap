@@ -1,0 +1,28 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:jobloadmap;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driverClassName: org.h2.Driver
+    username: sa
+    password: password
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+    show-sql: true
+  h2:
+    console:
+      enabled: true
+
+app:
+  security:
+    jwt-secret: Tm90LWFjdHVhbC1zZWNyZXQtcGxlYXNlLXVwZGF0ZS1tZQ==
+    jwt-expiration-minutes: 120
+  roadmap:
+    default-weekly-hours: 12
+
+logging:
+  level:
+    org.hibernate.SQL: debug
+
