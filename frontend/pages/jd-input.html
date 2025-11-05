@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JD 기반 로드맵 생성 | Job2Roadmap</title>
+  <link rel="stylesheet" href="../css/reset.css">
+  <link rel="stylesheet" href="../css/layout.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/forms.css">
+</head>
+<body>
+<header>
+  <div class="container navbar">
+    <a class="brand" href="../index.html">Job2Roadmap</a>
+    <nav class="nav-links">
+      <a href="jd-input.html">로드맵 만들기</a>
+      <a href="roadmap.html">샘플 보기</a>
+      <a href="dashboard.html">기술 트렌드</a>
+      <a href="my-roadmaps.html">내 로드맵</a>
+      <a href="login.html">로그인</a>
+    </nav>
+  </div>
+</header>
+<main>
+  <section class="container" style="max-width:860px;">
+    <h1 class="section-title">채용 공고로 맞춤 로드맵 만들기</h1>
+    <p style="color:var(--muted);margin-bottom:1.5rem;">채용 공고 URL을 붙여넣거나 텍스트를 복사하여 입력해주세요. 선수지식까지 자동으로 확장해 드립니다.</p>
+    <div class="form-card">
+      <div class="form-group">
+        <label>입력 방식</label>
+        <div class="radio-group" id="inputTabs">
+          <label class="radio-pill active"><input type="radio" name="inputType" value="url" checked>URL로 입력</label>
+          <label class="radio-pill"><input type="radio" name="inputType" value="text">텍스트로 입력</label>
+        </div>
+      </div>
+      <div class="form-group" id="urlInputGroup">
+        <label for="jdUrl">채용 공고 URL</label>
+        <input class="input" type="url" id="jdUrl" placeholder="https://...">
+      </div>
+      <div class="form-group" id="textInputGroup" style="display:none;">
+        <label for="jdText">채용 공고 텍스트</label>
+        <textarea class="textarea" id="jdText" rows="8" placeholder="채용 공고 내용을 붙여넣어 주세요."></textarea>
+      </div>
+      <div class="form-group">
+        <label for="targetRole">목표 직무</label>
+        <input class="input" id="targetRole" placeholder="예: 신입 Java 백엔드 개발자">
+      </div>
+      <div class="form-group">
+        <label for="targetCompany">목표 회사 (선택)</label>
+        <input class="input" id="targetCompany" placeholder="예: 스타트업 A">
+      </div>
+      <div class="form-group">
+        <label>준비 기간</label>
+        <select class="select" id="preparationMonths">
+          <option value="3">3개월</option>
+          <option value="6">6개월</option>
+          <option value="12">12개월</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="dailyHours">하루 학습 가능 시간 <span class="slider-value" id="dailyHoursValue">3시간</span></label>
+        <input class="input" type="range" id="dailyHours" min="1" max="6" value="3">
+      </div>
+      <div class="form-group">
+        <label>현재 실력 레벨</label>
+        <div class="level-group" id="levelGroup">
+          <label class="radio-pill active"><input type="radio" name="level" value="입문자" checked>완전 입문자</label>
+          <label class="radio-pill"><input type="radio" name="level" value="기본문법">문법만 살짝</label>
+          <label class="radio-pill"><input type="radio" name="level" value="토이프로젝트">토이 프로젝트 1개</label>
+        </div>
+      </div>
+      <button class="button primary" id="generateBtn">로드맵 생성하기</button>
+      <p class="error-message" id="jdError" style="display:none;"></p>
+    </div>
+  </section>
+</main>
+<footer>
+  <div class="footer-inner">
+    <strong>Job2Roadmap</strong>
+    <span>AI 맞춤 학습 로드맵</span>
+  </div>
+</footer>
+<script src="../js/api.js"></script>
+<script src="../js/pages/jd-input.js"></script>
+</body>
+</html>
