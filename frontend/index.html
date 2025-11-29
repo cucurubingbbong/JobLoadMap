@@ -1,70 +1,162 @@
 <!DOCTYPE html>
 <html lang="ko">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Job2Roadmap - 채용 공고 기반 학습 가이드</title>
-  <link rel="stylesheet" href="css/reset.css">
-  <link rel="stylesheet" href="css/layout.css">
-  <link rel="stylesheet" href="css/components.css">
-</head>
-<body>
-<header>
-  <div class="container navbar">
-    <a class="brand" href="index.html">Job2Roadmap</a>
-    <nav class="nav-links">
-      <a href="pages/jd-input.html">로드맵 만들기</a>
-      <a href="pages/roadmap.html">샘플 보기</a>
-      <a href="pages/dashboard.html">기술 트렌드</a>
-      <a href="pages/my-roadmaps.html">내 로드맵</a>
-      <a href="pages/login.html">로그인</a>
-    </nav>
-  </div>
-</header>
-<main>
-  <section class="container hero">
-    <div>
-      <span class="badge">채용 공고 역추적 커리큘럼</span>
-      <h1>채용 공고를 붙여넣으면<br>AI가 주차별 학습 로드맵을 짜드려요.</h1>
-      <p>실제 JD 기반 기술 분석, 선수지식 확장, 최근 트렌드 반영까지 한번에. Job2Roadmap과 함께 준비하세요.</p>
-      <div class="hero-actions">
-        <a class="button primary" href="pages/jd-input.html">로드맵 만들기</a>
-        <a class="button secondary" href="pages/roadmap.html">샘플 로드맵 보기</a>
-      </div>
-    </div>
-    <div class="card">
-      <h2>3분 만에 나만의 커리큘럼 완성</h2>
-      <ol style="display:grid;gap:0.75rem;margin-top:1.25rem;">
-        <li>1. 채용 공고 URL 또는 텍스트를 붙여넣어요.</li>
-        <li>2. 준비 기간, 하루 학습 시간, 현재 레벨을 선택해요.</li>
-        <li>3. AI가 단계별·주차별 학습 플랜을 만들어줘요.</li>
-      </ol>
-    </div>
-  </section>
 
-  <section class="container" style="margin-top:4rem;">
-    <h2 class="section-title">Job2Roadmap 핵심 기능</h2>
-    <div class="grid-3">
-      <div class="card">
-        <h3>역방향 커리큘럼 생성</h3>
-        <p style="margin-top:0.75rem;color:var(--muted);">JD에서 요구 기술을 자동 추출하고 선수지식까지 확장해 단계별 학습 목표를 제안합니다.</p>
-      </div>
-      <div class="card">
-        <h3>맞춤 학습 플랜</h3>
-        <p style="margin-top:0.75rem;color:var(--muted);">준비 기간과 학습 시간에 맞춰 주차별 학습 내용과 실습 미션을 추천합니다.</p>
-      </div>
-      <div class="card">
-        <h3>기술 트렌드 분석</h3>
-        <p style="margin-top:0.75rem;color:var(--muted);">매일 수집되는 채용 데이터를 기반으로 최신 인기 스택을 확인하고 커리큘럼에 반영합니다.</p>
-      </div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JobRoadMap | 커리어 성장의 시작</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body data-page="home">
+    <div class="page">
+        <!-- Header -->
+        <div class="header-wrapper">
+            <div class="header-top">
+                <a href="index.html" class="brand brand-animate" style="text-decoration:none;">
+                    <span>Job</span><span>Road</span><span>Map</span>
+                </a>
+                <div class="header-actions">
+                    <a href="#" id="navLogin">로그인</a>
+                    <a href="#" id="navSignup">회원가입</a>
+                    <a href="#" id="navLogout" style="display:none;">로그아웃</a>
+                    <a href="#">기업서비스</a>
+                </div>
+            </div>
+            <div class="header-nav">
+                <div class="nav-container">
+                    <a href="builder.html">로드맵 만들기</a>
+                    <a href="my-roadmaps.html">내 로드맵</a>
+                    <a href="profile.html">내 정보</a>
+                    <a href="hiring.html">채용공고</a>
+                    <a href="community.html">정보공유</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hero Banner -->
+        <div class="hero-banner" style="padding: 60px 0; text-align: center;">
+            <div class="hero-content" style="flex-direction: column; gap: 20px;">
+                <div class="hero-text">
+                    <p style="color: #ffd700; font-weight: bold; margin-bottom: 10px; letter-spacing: 1px;">AI CAREER
+                        GUIDE</p>
+                    <h1 style="font-size: 42px; margin-bottom: 20px;">나에게 딱 맞는 커리어 로드맵</h1>
+                    <p style="font-size: 18px; opacity: 0.9; max-width: 600px; margin: 0 auto;">
+                        채용공고를 분석하여 당신에게 필요한 스킬과 학습 계획을 AI가 자동으로 설계해 드립니다.
+                    </p>
+                </div>
+                <div style="margin-top: 20px;">
+                    <a href="builder.html" class="button"
+                        style="padding: 15px 40px; font-size: 18px; border-radius: 50px; background: #fff; color: var(--primary-strong);">지금
+                        시작하기</a>
+                </div>
+            </div>
+        </div>
+
+        <main class="main-container">
+            <!-- Smart Match Section -->
+            <section style="margin-bottom: 60px;">
+                <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 20px;">
+                    <h2 style="font-size: 24px; font-weight: 800; color: #333; margin: 0;">스마트 매치</h2>
+                    <a href="hiring.html" style="color: var(--muted); font-size: 14px;">더보기 ></a>
+                </div>
+                <div class="grid-3">
+                    <!-- Card 1 -->
+                    <div class="card"
+                        style="padding: 25px; border-radius: 16px; transition: transform 0.2s; cursor: pointer;"
+                        onmouseover="this.style.transform='translateY(-5px)'"
+                        onmouseout="this.style.transform='translateY(0)'">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+                            <span class="badge" style="background: #e5f2ff; color: #0051ce;">신입/인턴</span>
+                            <span style="color: #999; font-size: 12px;">D-5</span>
+                        </div>
+                        <h3 style="font-size: 18px; margin-bottom: 10px; line-height: 1.4;">[토스] Frontend Developer
+                            (채용연계형 인턴)</h3>
+                        <p style="color: #666; font-size: 14px; margin-bottom: 20px;">토스뱅크 · 서울 강남구</p>
+                        <div style="display: flex; gap: 5px; flex-wrap: wrap;">
+                            <span
+                                style="background: #f5f5f5; padding: 4px 8px; border-radius: 4px; font-size: 12px; color: #666;">React</span>
+                            <span
+                                style="background: #f5f5f5; padding: 4px 8px; border-radius: 4px; font-size: 12px; color: #666;">TypeScript</span>
+                        </div>
+                    </div>
+                    <!-- Card 2 -->
+                    <div class="card"
+                        style="padding: 25px; border-radius: 16px; transition: transform 0.2s; cursor: pointer;"
+                        onmouseover="this.style.transform='translateY(-5px)'"
+                        onmouseout="this.style.transform='translateY(0)'">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+                            <span class="badge" style="background: #e5f2ff; color: #0051ce;">경력 3년+</span>
+                            <span style="color: #999; font-size: 12px;">상시채용</span>
+                        </div>
+                        <h3 style="font-size: 18px; margin-bottom: 10px; line-height: 1.4;">[쿠팡] Backend Engineer
+                            (Commerce)</h3>
+                        <p style="color: #666; font-size: 14px; margin-bottom: 20px;">쿠팡 · 서울 송파구</p>
+                        <div style="display: flex; gap: 5px; flex-wrap: wrap;">
+                            <span
+                                style="background: #f5f5f5; padding: 4px 8px; border-radius: 4px; font-size: 12px; color: #666;">Java</span>
+                            <span
+                                style="background: #f5f5f5; padding: 4px 8px; border-radius: 4px; font-size: 12px; color: #666;">Spring
+                                Boot</span>
+                        </div>
+                    </div>
+                    <!-- Card 3 -->
+                    <div class="card"
+                        style="padding: 25px; border-radius: 16px; transition: transform 0.2s; cursor: pointer;"
+                        onmouseover="this.style.transform='translateY(-5px)'"
+                        onmouseout="this.style.transform='translateY(0)'">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+                            <span class="badge" style="background: #e5f2ff; color: #0051ce;">신입</span>
+                            <span style="color: #999; font-size: 12px;">오늘마감</span>
+                        </div>
+                        <h3 style="font-size: 18px; margin-bottom: 10px; line-height: 1.4;">[네이버] 클라우드 플랫폼 개발자 모집</h3>
+                        <p style="color: #666; font-size: 14px; margin-bottom: 20px;">네이버클라우드 · 성남 분당구</p>
+                        <div style="display: flex; gap: 5px; flex-wrap: wrap;">
+                            <span
+                                style="background: #f5f5f5; padding: 4px 8px; border-radius: 4px; font-size: 12px; color: #666;">Go</span>
+                            <span
+                                style="background: #f5f5f5; padding: 4px 8px; border-radius: 4px; font-size: 12px; color: #666;">Kubernetes</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Popular Roadmaps -->
+            <section>
+                <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 20px;">
+                    <h2 style="font-size: 24px; font-weight: 800; color: #333; margin: 0;">인기 로드맵</h2>
+                    <a href="community.html" style="color: var(--muted); font-size: 14px;">더보기 ></a>
+                </div>
+                <div class="grid-2">
+                    <div class="card"
+                        style="padding: 20px; display: flex; gap: 20px; align-items: center; cursor: pointer;">
+                        <div
+                            style="width: 60px; height: 60px; background: #f0f7ff; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px;">
+                            🚀</div>
+                        <div>
+                            <h3 style="margin: 0 0 5px;">비전공자를 위한 프론트엔드 로드맵</h3>
+                            <p style="margin: 0; color: #666; font-size: 14px;">6개월 과정 · HTML/CSS/JS/React</p>
+                        </div>
+                    </div>
+                    <div class="card"
+                        style="padding: 20px; display: flex; gap: 20px; align-items: center; cursor: pointer;">
+                        <div
+                            style="width: 60px; height: 60px; background: #fff0f0; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px;">
+                            ☕</div>
+                        <div>
+                            <h3 style="margin: 0 0 5px;">자바 백엔드 개발자 취업 코스</h3>
+                            <p style="margin: 0; color: #666; font-size: 14px;">4개월 과정 · Java/Spring/JPA</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>JobRoadMap — 커리어 성장의 파트너</p>
+        </footer>
     </div>
-  </section>
-</main>
-<footer>
-  <div class="footer-inner">
-    <strong>Job2Roadmap</strong>
-    <span>데이터 기반 역방향 커리큘럼 생성기</span>
-  </div>
-</footer>
+    <script src="script.js"></script>
 </body>
+
 </html>

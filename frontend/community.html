@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JobRoadMap | 정보공유</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body data-page="community">
+    <div class="page">
+        <!-- New Header Structure -->
+        <div class="header-wrapper">
+            <div class="header-top">
+                <a href="index.html" class="brand" style="text-decoration:none;">JobRoadMap</a>
+
+                <div class="header-actions">
+                    <a href="#" id="navLogin">로그인</a>
+                    <a href="#" id="navSignup">회원가입</a>
+                    <a href="#" id="navLogout" style="display:none;">로그아웃</a>
+                    <a href="#">기업서비스</a>
+                </div>
+            </div>
+            <div class="header-nav">
+                <div class="nav-container">
+                    <a href="builder.html">로드맵 만들기</a>
+                    <a href="my-roadmaps.html">내 로드맵</a>
+                    <a href="profile.html">내 정보</a>
+                    <a href="hiring.html">채용공고</a>
+                    <a href="community.html">정보공유</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- New Hero Banner -->
+        <div class="hero-banner">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <p style="color: #ffd700; font-weight: bold; margin-bottom: 5px;">정보공유</p>
+                    <h1>커뮤니티 게시판</h1>
+                    <p>학습 후기, 자료 링크 등을 남기고 AI 추천 미션과 함께 성장하세요.</p>
+                </div>
+            </div>
+        </div>
+
+        <main class="main-container">
+            <section class="panel">
+                <div class="panel__header">
+                    <div>
+                        <h2>게시판</h2>
+                    </div>
+                    <div class="tabs" id="communityTabs">
+                        <button class="active" data-tab="all">전체글</button>
+                        <button data-tab="notice">공지</button>
+                        <button data-tab="general">일반</button>
+                        <button data-tab="data">자료</button>
+                    </div>
+                </div>
+
+                <div class="board-layout">
+                    <div class="board-form card">
+                        <p class="eyebrow" style="display:block; color:#666; margin-bottom:10px;">글쓰기</p>
+                        <div class="grid-2">
+                            <label class="field"><span>말머리</span>
+                                <select id="postCategory">
+                                    <option value="일반">일반</option>
+                                    <option value="공지">공지</option>
+                                    <option value="자료">자료</option>
+                                </select>
+                            </label>
+                            <label class="field"><span>제목</span><input id="postTitle" type="text"
+                                    placeholder="제목을 입력하세요"></label>
+                        </div>
+                        <label class="field"><span>내용</span><textarea id="postContent" rows="4"
+                                placeholder="학습 후기, 자료 링크 등을 남겨보세요"></textarea></label>
+                        <label class="field"><span>파일 첨부 (선택)</span><input id="postFile" type="file"></label>
+                        <button id="postSubmit" class="button">등록하기</button>
+                        <p id="postStatus" class="status"></p>
+                    </div>
+
+                    <div class="board-column">
+                        <div class="board-list card">
+                            <div class="board-header">
+                                <span class="col num">번호</span>
+                                <span class="col category">말머리</span>
+                                <span class="col title">제목</span>
+                                <span class="col author">글쓴이</span>
+                                <span class="col date">작성일</span>
+                                <span class="col actions">관리</span>
+                            </div>
+                            <div id="communityPosts" class="board-body empty">첫 글을 작성해보세요.</div>
+                        </div>
+                        <div id="postDetail" class="card" style="margin-top: 20px;">
+                            <p class="eyebrow" style="display:block; color:#666; margin-bottom:10px;">글 상세</p>
+                            <div id="postDetailContent" class="muted">제목을 클릭하면 새 탭에서 본문과 댓글을 볼 수 있습니다.</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>JobRoadMap — 정보 공유 허브</p>
+        </footer>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>

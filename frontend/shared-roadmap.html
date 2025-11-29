@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>공유된 로드맵</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            background: radial-gradient(circle at 20% 20%, #f5f8ff 0, #f7f9fb 40%, #f9fafc 100%);
+        }
+        .share-shell {
+            max-width: 1200px;
+            margin: 32px auto 48px;
+            padding: 16px;
+        }
+        .share-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 12px;
+        }
+        .share-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+        }
+        .share-card {
+            box-shadow: 0 12px 30px rgba(0,0,0,0.06);
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            padding: 16px;
+            background: linear-gradient(180deg, #fff 0%, #f7f9ff 100%);
+        }
+        .share-week {
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .share-week:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        .share-meta {
+            color: #4b5563;
+            font-size: 14px;
+        }
+        .pill-topics {
+            margin: 8px 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        .pill-detail {
+            color: #374151;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body data-page="shared-roadmap">
+    <div class="page share-shell">
+        <header class="share-header">
+            <div>
+                <h2 id="shareTitle" style="margin:0;">공유된 로드맵</h2>
+                <p id="shareMeta" class="share-meta" style="margin:4px 0 0 0;"></p>
+            </div>
+            <a href="builder.html" class="button ghost">나도 만들기</a>
+        </header>
+        <section>
+            <div id="shareContent" class="share-grid empty">
+                <p class="empty">로드맵을 불러오는 중...</p>
+            </div>
+        </section>
+    </div>
+
+    <script>
+    const API_BASE = 'http://localhost:8080';
+    const params = new URLSearchParams(window.location.search);
+    const token = params.get('token') || window.location.pathname.split('/').pop();
+    const titleEl = document.getElementById('shareTitle');
+    const metaEl = document.getElementById('shareMeta');
+    const contentEl = document.getElementById('shareContent');
+
+    loadShared();
+
+    async function loadShared() {
+        if (!token || token.length < 5) {
+            contentEl.innerHTML = '<p class="empty">잘못된 공유 링크입니다.</p>';
+            return;
+        }
+        try {
+            const res = await fetch(`${API_BASE}/api/roadmap/shared/${token}`);
+            if (!res.ok) throw new Error('로드맵을 불러올 수 없습니다.');
+            const data = await res.json();
+            renderShared(data);
+        } catch (e) {
+            contentEl.innerHTML = `<p class="empty">${e.message}</p>`;
+        }
+    }
+
+    function renderShared(record) {
+        if (!record || !record.roadmap) {
+            contentEl.innerHTML = '<p class="empty">로드맵 정보가 없습니다.</p>';
+            return;
+        }
+        contentEl.classList.remove('empty');
+        titleEl.textContent = record.title || '공유된 로드맵';
+        metaEl.textContent = `총 ${record.roadmap.totalWeeks || 0}주 · 진행률 ${record.progress || 0}% ${record.roadmap.aiGenerated ? '· Gemini' : ''}`;
+
+        const steps = record.roadmap.steps || [];
+        contentEl.innerHTML = steps.map((step, idx) => `
+            <div class="share-card">
+                <p class="eyebrow" style="margin:0 0 10px 0;">Step ${idx + 1} · ${step.title || ''} (${step.estimatedWeeks || '?'}주)</p>
+                ${(step.weeks || []).map(week => `
+                    <div class="share-week" style="margin-bottom:14px; padding-bottom:12px; border-bottom:1px solid #edf0f5;">
+                        <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
+                            <h4 style="margin:0; font-size:16px;">${week.weekNumber || ''}주차</h4>
+                        </div>
+                        <div class="pill-topics">${(week.topics || []).map(t => `<span class="badge">${t}</span>`).join('')}</div>
+                        ${week.mission ? `<p class="pill-detail" style="margin:8px 0 4px 0;">🎯 ${week.mission}</p>` : ''}
+                        ${week.detail ? `<p class="pill-detail" style="margin:0;">${week.detail}</p>` : ''}
+                    </div>
+                `).join('')}
+            </div>
+        `).join('');
+    }
+    </script>
+</body>
+</html>

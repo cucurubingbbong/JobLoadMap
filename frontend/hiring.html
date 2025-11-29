@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JobRoadMap | 채용공고</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body data-page="hiring">
+    <div class="page">
+        <!-- New Header Structure -->
+        <div class="header-wrapper">
+            <div class="header-top">
+                <a href="index.html" class="brand" style="text-decoration:none;">JobRoadMap</a>
+                <div class="header-actions">
+                    <a href="#" id="navLogin">로그인</a>
+                    <a href="#" id="navSignup">회원가입</a>
+                    <a href="#" id="navLogout" style="display:none;">로그아웃</a>
+                    <a href="#">기업서비스</a>
+                </div>
+            </div>
+            <div class="header-nav">
+                <div class="nav-container">
+                    <a href="builder.html">로드맵 만들기</a>
+                    <a href="my-roadmaps.html">내 로드맵</a>
+                    <a href="profile.html">내 정보</a>
+                    <a href="hiring.html">채용공고</a>
+                    <a href="community.html">정보공유</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- New Hero Banner -->
+        <div class="hero-banner">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <p style="color: #ffd700; font-weight: bold; margin-bottom: 5px;">채용공고</p>
+                    <h1>JobKorea / WorkNet 카테고리별 리스트</h1>
+                    <p>실시간 채용 정보를 확인하고 지원하세요.</p>
+                </div>
+            </div>
+        </div>
+
+        <main class="main-container">
+            <section class="panel">
+                <div class="panel__header">
+                    <div>
+                        <h2>채용공고 리스트</h2>
+                    </div>
+                    <button id="refreshHiring" class="button ghost">새로고침</button>
+                </div>
+                <div id="hiringList" class="hiring-grid empty">
+                    <p class="empty">불러오는 중...</p>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>JobRoadMap — 채용 정보</p>
+        </footer>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>

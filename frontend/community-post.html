@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>커뮤니티 글 보기</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body data-page="community-post">
+    <div class="page">
+        <!-- Header -->
+        <div class="header-wrapper">
+            <div class="header-top">
+                <a href="index.html" class="brand brand-animate" style="text-decoration:none;">
+                    <span>Job</span><span>Road</span><span>Map</span>
+                </a>
+                <div class="header-actions">
+                    <a href="#">기업서비스</a>
+                </div>
+            </div>
+            <div class="header-nav">
+                <div class="nav-container">
+                    <a href="builder.html">로드맵 만들기</a>
+                    <a href="my-roadmaps.html">내 로드맵</a>
+                    <a href="profile.html">내 정보</a>
+                    <a href="hiring.html">채용공고</a>
+                    <a href="community.html">정보공유</a>
+                </div>
+            </div>
+        </div>
+
+        <main class="main-container">
+            <section class="panel">
+                <div id="postContent">불러오는 중...</div>
+            </section>
+            <section class="panel">
+                <div class="panel__header">
+                    <div>
+                        <p class="eyebrow">댓글</p>
+                        <h2>의견 남기기</h2>
+                    </div>
+                </div>
+                <div id="comments" class="cards empty">댓글이 없습니다.</div>
+                <div class="card">
+                    <textarea id="commentInput" rows="3" placeholder="댓글을 입력하세요"></textarea>
+                    <button id="commentSubmit">등록</button>
+                    <p id="commentStatus" class="status"></p>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>JobRoadMap — 커리어 성장의 파트너</p>
+        </footer>
+    </div>
+    <script>
+        const API_BASE = 'http://localhost:8080';
+        const params = new URLSearchParams(window.location.search);
+        const postId = params.get('id');
+        attachNav();
+        loadPost();
+
+        async function loadPost() {
+            const box = document.getElementById('postContent');
+            try {
+                const res = await fetch(`${API_BASE}/api/community/posts/${postId}`);
+                if (!res.ok) throw new Error('불러오기 실패');
+                const p = await res.json();
+                box.innerHTML = `
+            <div class="view-content">
+                <div class="view-header">
+                    <div class="view-subject">
+                        <span class="view-category">[${p.category || '일반'}]</span>
+                        <h1 class="view-title">${p.title}</h1>
+                    </div>
+                    <div class="view-info">
+                        <span class="view-author">${p.author || p.authorEmail || '익명'}</span>
+                        <span class="view-sep">|</span>
+                        <span class="view-date">${(p.createdAt || '').toString().split('T')[0] || ''}</span>
+                    </div>
+                </div>
+                <div class="view-body">
+                    ${(p.content || '').replace(/\n/g, '<br>')}
+                    ${p.attachmentName ? `<div class="view-attachment"><a href="${p.attachmentData}" download="${p.attachmentName}">💾 ${p.attachmentName}</a></div>` : ''}
+                </div>
+            </div>
+        `;
+                renderComments(p.comments || []);
+            } catch (e) {
+                box.textContent = e.message;
+            }
+        }
+
+        function renderComments(list) {
+            const wrap = document.getElementById('comments');
+            if (!list.length) {
+                wrap.innerHTML = '<p class="empty">댓글이 없습니다.</p>';
+                return;
+            }
+            wrap.classList.remove('empty');
+            wrap.innerHTML = `
+        <div class="comment-list">
+            ${list.map(c => `
+                <div class="comment-item">
+                    <div class="comment-meta">
+                        <span class="comment-author">${c.author || c.authorEmail || '익명'}</span>
+                        <span class="comment-date">${(c.createdAt || '').toString().split('T')[0] || ''}</span>
+                    </div>
+                    <div class="comment-text">${c.content}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+        }
+
+        document.getElementById('commentSubmit').addEventListener('click', async () => {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                alert('로그인 후 작성 가능합니다.');
+                return;
+            }
+            const content = document.getElementById('commentInput').value.trim();
+            if (!content) return;
+            const status = document.getElementById('commentStatus');
+            try {
+                const res = await fetch(`${API_BASE}/api/community/posts/${postId}/comments`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-Auth-Token': token },
+                    body: JSON.stringify({ content })
+                });
+                if (!res.ok) throw new Error('등록 실패');
+                document.getElementById('commentInput').value = '';
+                loadPost();
+                status.textContent = '';
+            } catch (e) {
+                status.textContent = e.message;
+            }
+        });
+
+        function attachNav() {
+            const loginBtn = document.getElementById('navLogin');
+            const signupBtn = document.getElementById('navSignup');
+            const logoutBtn = document.getElementById('navLogout');
+            if (loginBtn) loginBtn.onclick = () => window.location.href = 'login.html';
+            if (signupBtn) signupBtn.onclick = () => window.location.href = 'signup.html';
+            if (logoutBtn) logoutBtn.onclick = () => {
+                const token = localStorage.getItem('token');
+                if (token) fetch(`${API_BASE}/api/auth/logout`, { method: 'POST', headers: { 'X-Auth-Token': token } }).finally(() => localStorage.removeItem('token'));
+            };
+        }
+    </script>
+</body>
+
+</html>

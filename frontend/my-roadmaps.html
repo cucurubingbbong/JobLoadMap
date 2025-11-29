@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JobRoadMap | 내 로드맵</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body data-page="my-roadmaps">
+    <div class="page">
+        <!-- New Header Structure -->
+        <div class="header-wrapper">
+            <div class="header-top">
+                <a href="index.html" class="brand" style="text-decoration:none;">JobRoadMap</a>
+                <div class="header-actions">
+                    <a href="#" id="navLogin">로그인</a>
+                    <a href="#" id="navSignup">회원가입</a>
+                    <a href="#" id="navLogout" style="display:none;">로그아웃</a>
+                    <a href="#">기업서비스</a>
+                </div>
+            </div>
+            <div class="header-nav">
+                <div class="nav-container">
+                    <a href="builder.html">로드맵 만들기</a>
+                    <a href="my-roadmaps.html">내 로드맵</a>
+                    <a href="profile.html">내 정보</a>
+                    <a href="hiring.html">채용공고</a>
+                    <a href="community.html">정보공유</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- New Hero Banner -->
+        <div class="hero-banner">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <p style="color: #ffd700; font-weight: bold; margin-bottom: 5px;">내 로드맵</p>
+                    <h1>저장한 로드맵과 AI 코칭</h1>
+                    <p>로그인 후 생성한 로드맵을 불러와 달성도와 체크리스트를 관리하세요.</p>
+                </div>
+            </div>
+        </div>
+
+        <main class="main-container">
+            <!-- 저장된 로드맵 -->
+            <section class="panel">
+                <div class="panel__header">
+                    <div>
+                        <h2>나의 목록</h2>
+                    </div>
+                    <button id="refreshRoadmaps" class="button ghost">새로고침</button>
+                </div>
+                <div id="savedRoadmaps" class="cards empty">로그인 후 로드맵을 저장해 보세요.</div>
+            </section>
+
+            <!-- 상세/체크/AI 탭 -->
+            <section class="panel" style="margin-top: 20px;">
+                <div class="panel__header">
+                    <div>
+                        <h2 id="savedDetailTitle">선택된 로드맵</h2>
+                    </div>
+                    <div class="tabs" id="detailTabs">
+                        <button class="active" data-tab="weeks">체크리스트</button>
+                        <button data-tab="detail">로드맵 보기</button>
+                        <button data-tab="ai">AI 대화</button>
+                    </div>
+                </div>
+                <div class="tab-content active" data-tab="weeks">
+                    <div id="progressWeeks" class="card">
+                        <p class="eyebrow" style="display:block; color:#666; margin-bottom:10px;">주차 체크</p>
+                        <div id="weekChecklist" class="week-checklist empty">로드맵을 선택하세요.</div>
+                        <p class="muted" style="margin-top:10px;">달성도: <span id="progressValue">0</span>%</p>
+                    </div>
+                    <button id="floatingSave" class="floating-save button">달성도 저장</button>
+                </div>
+                <div class="tab-content" data-tab="detail">
+                    <div id="savedDetail" class="grid-2 empty">
+                        <p class="empty">로드맵을 선택하면 상세가 표시됩니다.</p>
+                    </div>
+                </div>
+                <div class="tab-content" data-tab="ai">
+                    <div class="grid-2">
+                        <div class="card chat-card">
+                            <p class="eyebrow" style="display:block; color:#666; margin-bottom:10px;">질문</p>
+                            <p class="muted" id="chatContext">로드맵을 선택하면 제목과 진행률이 표시됩니다.</p>
+                            <textarea id="chatInput" rows="4"
+                                placeholder="예) 3주차 학습을 더 빠르게 끝내려면 무엇을 보완해야 할까요?"></textarea>
+                            <button id="chatSend" class="button">AI에게 물어보기</button>
+                            <p id="chatStatus" class="status"></p>
+                        </div>
+                        <div class="card chat-card">
+                            <p class="eyebrow" style="display:block; color:#666; margin-bottom:10px;">AI 답변</p>
+                            <div id="chatAnswer" class="chat-answer">로드맵을 선택하고 질문을 보내면 여기에 답변이 표시됩니다.</div>
+                            <div id="chatHistory" class="chat-answer chat-history" style="margin-top:8px;">이전 질문/답변이 여기에
+                                누적됩니다.</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>JobRoadMap — 개인 맞춤 대시보드</p>
+        </footer>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>

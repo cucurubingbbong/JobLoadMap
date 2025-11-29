@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JobRoadMap | 로그인</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body data-page="login">
+    <div class="page">
+        <!-- New Header Structure -->
+        <div class="header-wrapper">
+            <div class="header-top">
+                <a href="index.html" class="brand" style="text-decoration:none;">JobRoadMap</a>
+
+                <div class="header-actions">
+                    <a href="#" id="navLogin">로그인</a>
+                    <a href="#" id="navSignup">회원가입</a>
+                    <a href="#" id="navLogout" style="display:none;">로그아웃</a>
+                    <a href="#">기업서비스</a>
+                </div>
+            </div>
+            <div class="header-nav">
+                <div class="nav-container">
+                    <a href="builder.html">로드맵 만들기</a>
+                    <a href="my-roadmaps.html">내 로드맵</a>
+                    <a href="profile.html">내 정보</a>
+                    <a href="hiring.html">채용공고</a>
+                    <a href="community.html">정보공유</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- New Hero Banner -->
+        <div class="hero-banner">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <p style="color: #ffd700; font-weight: bold; margin-bottom: 5px;">계정</p>
+                    <h1>JobRoadMap 로그인</h1>
+                    <p>토큰은 클라이언트에서만 저장되며 데모 백엔드는 이메일/비밀번호로 즉시 발급합니다.</p>
+                </div>
+            </div>
+        </div>
+
+        <main class="main-container auth-shell">
+            <section class="auth-card">
+                <h1>로그인</h1>
+                <p class="sub">계정이 없으면 회원가입 후 바로 로그인됩니다.</p>
+                <form id="loginForm" class="form-grid">
+                    <label>
+                        <span class="field-label">아이디</span>
+                        <input id="loginEmail" type="text" required placeholder="아이디를 입력하세요">
+                    </label>
+                    <label>
+                        <span class="field-label">비밀번호</span>
+                        <input id="loginPassword" type="password" placeholder="비밀번호를 입력하세요">
+                    </label>
+                    <button type="submit" class="button" style="width:100%;">로그인</button>
+                    <button type="button" id="resetPasswordBtn" class="button ghost" style="width:100%;">비밀번호
+                        찾기</button>
+                </form>
+                <div class="auth-actions" style="margin-top: 20px;">
+                    <span class="muted">계정이 없으신가요?</span>
+                    <a class="auth-link" href="signup.html">회원가입</a>
+                </div>
+                <p id="loginStatus" class="status"></p>
+            </section>
+        </main>
+
+        <footer>
+            <p>JobRoadMap — 로그인 후 로드맵을 저장하세요.</p>
+        </footer>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>

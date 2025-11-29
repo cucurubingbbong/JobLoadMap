@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 연결 체크</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="ai-check">
+<div class="page">
+    <nav class="top-nav">
+        <div class="brand">JobRoadMap</div>
+        <div class="nav-links">
+            <a href="index.html">홈</a>
+            <a href="builder.html">로드맵 생성</a>
+            <a href="profile.html">내 정보</a>
+            <a href="my-roadmaps.html">내 로드맵</a>
+            <a href="community.html">정보공유</a>
+            <a href="ai-check.html" class="active">연결 체크</a>
+            <a href="hiring.html">채용공고</a>
+        </div>
+        <div class="nav-actions">
+            <button id="navLogin">로그인</button>
+            <button class="ghost" id="navLogout">로그아웃</button>
+        </div>
+    </nav>
+
+    <main>
+        <section class="panel">
+            <div class="panel__header">
+                <div>
+                    <p class="eyebrow">AI 연결 확인</p>
+                    <h2>Gemini API 상태 체크</h2>
+                </div>
+            </div>
+            <div class="grid-2" style="align-items:center;">
+                <button id="checkAi">AI 연결 체크</button>
+                <p id="aiStatus" class="status"></p>
+            </div>
+        </section>
+    </main>
+</div>
+<script src="script.js"></script>
+</body>
+</html>

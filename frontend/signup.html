@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JobRoadMap | 회원가입</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body data-page="signup">
+    <div class="page">
+        <!-- New Header Structure -->
+        <div class="header-wrapper">
+            <div class="header-top">
+                <a href="index.html" class="brand" style="text-decoration:none;">JobRoadMap</a>
+
+                <div class="header-actions">
+                    <a href="#" id="navLogin">로그인</a>
+                    <a href="#" id="navSignup">회원가입</a>
+                    <a href="#" id="navLogout" style="display:none;">로그아웃</a>
+                    <a href="#">기업서비스</a>
+                </div>
+            </div>
+            <div class="header-nav">
+                <div class="nav-container">
+                    <a href="builder.html">로드맵 만들기</a>
+                    <a href="my-roadmaps.html">내 로드맵</a>
+                    <a href="profile.html">내 정보</a>
+                    <a href="hiring.html">채용공고</a>
+                    <a href="community.html">정보공유</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- New Hero Banner -->
+        <div class="hero-banner">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <p style="color: #ffd700; font-weight: bold; margin-bottom: 5px;">계정</p>
+                    <h1>JobRoadMap 회원가입</h1>
+                    <p>가입 시 바로 토큰을 발급해 로그인까지 마칩니다. 추후 실제 가입 API로 교체 가능합니다.</p>
+                </div>
+            </div>
+        </div>
+
+        <main class="main-container auth-shell">
+            <section class="auth-card">
+                <h1>회원가입</h1>
+                <p class="sub">실제 서비스 출시를 대비해 비밀번호 확인을 포함했습니다.</p>
+                <form id="signupForm" class="form-grid">
+                    <label>
+                        <span class="field-label">이메일</span>
+                        <input id="signupEmail" type="email" required placeholder="you@example.com">
+                    </label>
+                    <label>
+                        <span class="field-label">아이디</span>
+                        <input id="signupId" type="text" required placeholder="아이디를 입력하세요">
+                    </label>
+                    <label>
+                        <span class="field-label">비밀번호</span>
+                        <input id="signupPassword" type="password" required placeholder="영문, 숫자 혼합 권장">
+                    </label>
+                    <label>
+                        <span class="field-label">비밀번호 확인</span>
+                        <input id="signupPasswordConfirm" type="password" required placeholder="비밀번호를 다시 입력하세요">
+                    </label>
+                    <button type="submit" class="button" style="width:100%;">회원가입</button>
+                </form>
+                <div class="auth-actions" style="margin-top: 20px;">
+                    <span class="muted">이미 계정이 있으신가요?</span>
+                    <a class="auth-link" href="login.html">로그인</a>
+                </div>
+                <p id="signupStatus" class="status"></p>
+            </section>
+        </main>
+
+        <footer>
+            <p>JobRoadMap — 가입 후 바로 로드맵을 생성하세요.</p>
+        </footer>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>

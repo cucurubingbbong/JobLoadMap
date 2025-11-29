@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JobRoadMap | 로드맵 생성</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body data-page="builder">
+    <div class="page">
+        <!-- Header -->
+        <div class="header-wrapper">
+            <div class="header-top">
+                <a href="index.html" class="brand brand-animate" style="text-decoration:none;">
+                    <span>Job</span><span>Road</span><span>Map</span>
+                </a>
+                <div class="header-actions">
+                    <a href="#" id="navLogin">로그인</a>
+                    <a href="#" id="navSignup">회원가입</a>
+                    <a href="#" id="navLogout" style="display:none;">로그아웃</a>
+                    <a href="#">기업서비스</a>
+                </div>
+            </div>
+            <div class="header-nav">
+                <div class="nav-container">
+                    <a href="builder.html" class="active">로드맵 만들기</a>
+                    <a href="my-roadmaps.html">내 로드맵</a>
+                    <a href="profile.html">내 정보</a>
+                    <a href="hiring.html">채용공고</a>
+                    <a href="community.html">정보공유</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hero Banner -->
+        <div class="hero-banner">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <p style="color: #ffd700; font-weight: bold; margin-bottom: 5px;">ROADMAP BUILDER</p>
+                    <h1>AI 로드맵 생성기</h1>
+                    <p>채용공고 URL이나 텍스트를 입력하면, AI가 합격을 위한 최적의 학습 로드맵을 설계해 드립니다.</p>
+                </div>
+            </div>
+        </div>
+
+        <main class="main-container">
+            <!-- 입력 폼: URL/텍스트 탭 전환 -->
+            <section class="panel">
+                <div class="panel__header" style="border-bottom:none; margin-bottom:0;">
+                    <div>
+                        <h2>채용공고 입력</h2>
+                        <p class="muted" style="margin-top:4px;">채용공고 내용을 바탕으로 맞춤형 로드맵을 생성합니다.</p>
+                    </div>
+                    <div id="jdTabs" class="tabs segmented-control">
+                        <button class="active" data-tab="url">URL로 입력</button>
+                        <button data-tab="text">텍스트로 입력</button>
+                    </div>
+                </div>
+
+                <div class="card" style="border-top-left-radius: 0; border-top-right-radius: 0; margin-top: 10px;">
+                    <div class="tab-content active" data-tab="url">
+                        <label class="field-label" for="jdUrl">채용공고 URL</label>
+                        <div class="input-group">
+                            <input id="jdUrl" type="text" placeholder="예: https://www.wanted.co.kr/wd/12345" />
+                        </div>
+                    </div>
+
+                    <div class="tab-content" data-tab="text">
+                        <label class="field-label" for="jdText">채용공고 전문</label>
+                        <textarea id="jdText" rows="8" placeholder="채용공고의 주요 업무와 자격 요건을 복사해서 붙여넣으세요."></textarea>
+                    </div>
+
+                    <div class="divider"></div>
+
+                    <div class="grid-3" style="align-items: end;">
+                        <div class="form-group">
+                            <label class="field-label">준비 기간 <span class="highlight"
+                                    id="durationValue">6</span>개월</label>
+                            <input id="duration" type="range" min="1" max="12" value="12" class="range-slider" />
+                            <div class="range-labels">
+                                <span>1개월</span>
+                                <span>12개월</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="field-label">하루 학습 <span class="highlight" id="hoursValue">2</span>시간</label>
+                            <input id="hours" type="range" min="1" max="12" value="2" class="range-slider" />
+                            <div class="range-labels">
+                                <span>1시간</span>
+                                <span>12시간</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="field-label" for="level">현재 레벨</label>
+                            <select id="level" class="styled-select">
+                                <option value="신입 준비">🌱 신입 준비</option>
+                                <option value="인턴/신입 지원 중">🐣 인턴/신입 지원 중</option>
+                                <option value="경력 1~3년 타겟">🐥 경력 1~3년 타겟</option>
+                                <option value="경력 3~5년 타겟">🦅 경력 3~5년 타겟</option>
+                                <option value="시니어 5년+ 타겟">🦉 시니어 5년+ 타겟</option>
+                                <option value="리드/매니저 타겟">🦁 리드/매니저 타겟</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="action-bar">
+                        <div id="formStatus" class="status-message">
+                            <span class="icon">ℹ️</span> URL 또는 텍스트를 입력하고 설정을 확인하세요.
+                        </div>
+                        <div class="actions">
+                            <input id="saveTitle" type="text" placeholder="로드맵 이름 (저장용)" class="compact-input">
+                            <button class="button ghost" id="saveRoadmap">결과 저장</button>
+                            <button class="button primary large" id="generate">✨ 로드맵 생성하기</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 생성된 로드맵 출력 영역 -->
+            <section class="panel" style="margin-top: 20px;">
+                <div class="panel__header">
+                    <div>
+                        <h2>주차별 로드맵</h2>
+                    </div>
+                    <p id="roadmapMeta" class="muted"></p>
+                </div>
+                <div id="roadmap" class="grid-2 empty">
+                    <p class="empty">로드맵을 생성하면 여기에서 볼 수 있어요.</p>
+                </div>
+            </section>
+
+            <!-- 크롤링된 공고 미리보기 -->
+            <section class="panel" style="margin-top: 20px;">
+                <div class="panel__header">
+                    <div>
+                        <h2>오늘의 공고 키워드</h2>
+                    </div>
+                    <button class="button ghost" id="fetchPostsRefresh">새로고침</button>
+                </div>
+                <div id="posts" class="grid-3 empty">
+                    <p class="empty">샘플 크롤링 데이터를 불러와주세요.</p>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>JobRoadMap — JD URL 파싱 & AI 미션 자동화</p>
+        </footer>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>
