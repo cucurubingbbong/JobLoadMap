@@ -42,8 +42,10 @@ services:
     plan: free
     rootDir: frontend
     buildCommand: |
-      bash -c "if [ -n \"$API_BASE_URL\" ]; then echo \"window.API_BASE='$API_BASE_URL';\" > api-config.js; fi"
+      bash -c "if [ -n \"$API_BASE_URL\" ]; then echo \"window.API_BASE='$API_BASE_URL';\" > api-config.js; fi; if [ -n \"$FRONTEND_BASE_URL\" ]; then echo \"window.FRONTEND_BASE='$FRONTEND_BASE_URL';\" >> api-config.js; fi"
     publishPath: .
     envVars:
       - key: API_BASE_URL
+        sync: false
+      - key: FRONTEND_BASE_URL
         sync: false

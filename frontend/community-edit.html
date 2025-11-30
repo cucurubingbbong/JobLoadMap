@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JobRoadMap | 게시글 수정</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body data-page="community-edit">
+    <div class="page">
+        <div class="header-wrapper">
+            <div class="header-top">
+                <a href="index.html" class="brand" style="text-decoration:none;">JobRoadMap</a>
+                <div class="header-actions">
+                    <a href="#" id="navLogin">로그인</a>
+                    <a href="#" id="navSignup">회원가입</a>
+                    <a href="#" id="navLogout" style="display:none;">로그아웃</a>
+                    <a href="#">기업서비스</a>
+                </div>
+            </div>
+            <div class="header-nav">
+                <div class="nav-container">
+                    <a href="builder.html">로드맵 만들기</a>
+                    <a href="my-roadmaps.html">내 로드맵</a>
+                    <a href="profile.html">내 정보</a>
+                    <a href="hiring.html">채용공고</a>
+                    <a href="community.html">정보공유</a>
+                </div>
+            </div>
+        </div>
+
+        <main class="main-container">
+            <section class="panel">
+                <div class="panel__header" style="justify-content: space-between; align-items:center;">
+                    <div>
+                        <p class="eyebrow" style="margin:0; color:#666;">게시글 수정</p>
+                        <h2 id="editHeading" style="margin:4px 0 0;">제목 불러오는 중...</h2>
+                    </div>
+                    <div class="actions">
+                        <button id="editSave" class="button primary">저장</button>
+                        <a href="community.html" class="button ghost">목록</a>
+                    </div>
+                </div>
+
+                <div class="card" style="display:grid; gap:12px;">
+                    <label class="field"><span>말머리</span>
+                        <select id="editCategory">
+                            <option value="공지">공지</option>
+                            <option value="일반">일반</option>
+                            <option value="자료">자료</option>
+                        </select>
+                    </label>
+                    <label class="field"><span>제목</span>
+                        <input id="editTitle" type="text" placeholder="제목을 입력하세요">
+                    </label>
+                    <label class="field"><span>내용</span>
+                        <textarea id="editContent" rows="10" placeholder="내용을 입력하세요"></textarea>
+                    </label>
+                    <p id="editStatus" class="status"></p>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>JobRoadMap — 정보 공유 허브</p>
+        </footer>
+    </div>
+    <script src="api-config.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>

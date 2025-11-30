@@ -4,6 +4,7 @@
 
 const API_BASE = (window.API_BASE && window.API_BASE.trim()) || 'http://localhost:8080';
 window.API_BASE = API_BASE;
+const FRONTEND_BASE = (window.FRONTEND_BASE && window.FRONTEND_BASE.trim()) || window.location.origin;
 const page = document.body.dataset.page;
 
 // 샘플 JD 텍스트는 데모/오프라인 환경에서 즉시 실행하도록 제공합니다.
@@ -16,6 +17,7 @@ attachNavHandlers();
 if (page === 'builder') initBuilder();
 if (page === 'my-roadmaps') initDashboard();
 if (page === 'community') initCommunity();
+if (page === 'community-edit') initCommunityEdit();
 if (page === 'login') initLoginPage();
 if (page === 'signup') initSignupPage();
 if (page === 'hiring') initHiring();
@@ -221,6 +223,7 @@ function setActiveNavLinks() {
         hiring: 'hiring.html',
         community: 'community.html',
         'community-post': 'community.html',
+        'community-edit': 'community.html',
         login: 'login.html', // Not in main menu
         signup: 'signup.html' // Not in main menu
     };
@@ -648,7 +651,7 @@ function initDashboard() {
             }
             const data = await res.json();
             // 프론트 전용 공유 URL로 변환 (정적 파일 + 토큰)
-            const fullUrl = `${window.location.origin}/shared-roadmap.html?token=${data.token || data.url?.split('/').pop()}`;
+            const fullUrl = `${FRONTEND_BASE}/shared-roadmap.html?token=${data.token || data.url?.split('/').pop()}`;
             if (navigator.clipboard) {
                 navigator.clipboard.writeText(fullUrl);
                 alert(`공유 링크를 클립보드에 복사했습니다.\n${fullUrl}`);
@@ -907,8 +910,10 @@ function initCommunity() {
                 <span class="col date">${(p.createdAt || '').toString().split('T')[0] || ''}</span>
                 <span class="col actions">
                     ${myEmail && p.authorEmail === myEmail ? `
-                        <button class="ghost edit-post" data-id="${p.id}">수정</button>
-                        <button class="ghost" data-id="${p.id}">삭제</button>
+                        <div class="action-buttons">
+                            <a class="button ghost edit-post" href="community-edit.html?id=${p.id}">수정</a>
+                            <button class="ghost delete-post" data-id="${p.id}">삭제</button>
+                        </div>
                     ` : ''}
                 </span>
             </div>
@@ -918,12 +923,8 @@ function initCommunity() {
         if (detailBox) {
             detailBox.innerHTML = '<p class="muted">제목을 클릭하면 새 탭에서 글과 댓글을 볼 수 있습니다.</p>';
         }
-        postsDiv.querySelectorAll('button[data-id]').forEach(btn => {
-            if (btn.classList.contains('edit-post')) {
-                btn.addEventListener('click', () => openEdit(btn.dataset.id, filtered));
-            } else {
-                btn.addEventListener('click', () => deletePost(btn.dataset.id));
-            }
+        postsDiv.querySelectorAll('.delete-post').forEach(btn => {
+            btn.addEventListener('click', () => deletePost(btn.dataset.id));
         });
         setLoading(postsDiv, false);
     }
@@ -935,22 +936,6 @@ function initCommunity() {
             return;
         }
         await fetch(`${API_BASE}/api/community/posts/${id}`, { method: 'DELETE', headers: authHeaders(token) });
-        loadCommunity();
-    }
-
-    async function openEdit(id, data) {
-        const post = data.find(p => p.id === id);
-        if (!post) return;
-        const title = prompt('제목 수정', post.title);
-        if (title === null) return;
-        const content = prompt('내용 수정', post.content);
-        if (content === null) return;
-        const token = localStorage.getItem('token');
-        await fetch(`${API_BASE}/api/community/posts/${id}`, {
-            method: 'PATCH',
-            headers: { 'Content-Type': 'application/json', ...authHeaders(token) },
-            body: JSON.stringify({ title, content, category: post.category })
-        });
         loadCommunity();
     }
 
@@ -968,6 +953,71 @@ function initCommunity() {
             ${post.attachmentName ? `<a href="${post.attachmentData}" download="${post.attachmentName}">첨부 다운로드</a>` : ''}
         `;
     }
+}
+
+// 커뮤니티 수정 페이지 (community-edit)
+function initCommunityEdit() {
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get('id');
+    const titleInput = document.getElementById('editTitle');
+    const contentInput = document.getElementById('editContent');
+    const categorySelect = document.getElementById('editCategory');
+    const statusEl = document.getElementById('editStatus');
+    const heading = document.getElementById('editHeading');
+    const saveBtn = document.getElementById('editSave');
+
+    if (!id) {
+        if (statusEl) statusEl.textContent = '잘못된 접근입니다.';
+        return;
+    }
+
+    loadPost();
+
+    async function loadPost() {
+        try {
+            const res = await fetch(`${API_BASE}/api/community/posts/${id}`);
+            if (!res.ok) throw new Error('글을 불러오지 못했습니다.');
+            const data = await res.json();
+            if (heading) heading.textContent = data.title || '게시글 수정';
+            if (titleInput) titleInput.value = data.title || '';
+            if (contentInput) contentInput.value = data.content || '';
+            if (categorySelect) categorySelect.value = data.category || '일반';
+        } catch (e) {
+            if (statusEl) statusEl.textContent = e.message;
+        }
+    }
+
+    async function save() {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            alert('로그인 후 수정할 수 있습니다.');
+            return;
+        }
+        const payload = {
+            title: titleInput ? titleInput.value.trim() : '',
+            content: contentInput ? contentInput.value.trim() : '',
+            category: categorySelect ? categorySelect.value : '일반'
+        };
+        if (!payload.title || !payload.content) {
+            if (statusEl) statusEl.textContent = '제목과 내용을 입력하세요.';
+            return;
+        }
+        if (statusEl) statusEl.textContent = '저장 중...';
+        const res = await fetch(`${API_BASE}/api/community/posts/${id}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json', ...authHeaders(token) },
+            body: JSON.stringify(payload)
+        });
+        if (!res.ok) {
+            const msg = await res.text();
+            if (statusEl) statusEl.textContent = msg || '수정에 실패했습니다.';
+            return;
+        }
+        if (statusEl) statusEl.textContent = '저장되었습니다. 목록으로 이동합니다.';
+        setTimeout(() => window.location.href = 'community.html', 500);
+    }
+
+    if (saveBtn) saveBtn.addEventListener('click', save);
 }
 
 // ==============================================
