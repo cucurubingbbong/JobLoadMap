@@ -1,0 +1,49 @@
+services:
+  - type: web
+    name: jrm-backend
+    env: java
+    plan: free
+    rootDir: backend
+    buildCommand: "chmod +x ./.maven/apache-maven-3.9.9/bin/mvn && ./.maven/apache-maven-3.9.9/bin/mvn -B -DskipTests package"
+    startCommand: "java -Dserver.port=${PORT} -jar target/job-roadmap-0.0.1-SNAPSHOT.jar"
+    envVars:
+      - key: JAVA_VERSION
+        value: 17
+      - key: AI_API_URL
+        sync: false
+      - key: AI_API_KEY
+        sync: false
+      - key: SPRING_DATASOURCE_URL
+        value: jdbc:h2:file:./data/jrmdb_v2;DB_CLOSE_DELAY=-1;AUTO_SERVER=TRUE
+      - key: SPRING_DATASOURCE_USERNAME
+        value: sa
+      - key: SPRING_DATASOURCE_PASSWORD
+        sync: false
+      - key: SPRING_JPA_HIBERNATE_DDL_AUTO
+        value: update
+      - key: SPRING_H2_CONSOLE_ENABLED
+        value: "true"
+      - key: MAIL_HOST
+        sync: false
+      - key: MAIL_PORT
+        value: "587"
+      - key: MAIL_USERNAME
+        sync: false
+      - key: MAIL_PASSWORD
+        sync: false
+      - key: MAIL_SMTP_AUTH
+        value: "true"
+      - key: MAIL_SMTP_STARTTLS
+        value: "true"
+
+  - type: static
+    name: jrm-frontend
+    env: static
+    plan: free
+    rootDir: frontend
+    buildCommand: |
+      bash -c "if [ -n \"$API_BASE_URL\" ]; then echo \"window.API_BASE='$API_BASE_URL';\" > api-config.js; fi"
+    publishPath: .
+    envVars:
+      - key: API_BASE_URL
+        sync: false

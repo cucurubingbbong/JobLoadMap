@@ -2,7 +2,8 @@
 // 화이트/블루 UI를 유지하면서 페이지별 초기화 로직을 분리했습니다.
 // 각 섹션의 주석을 따라가면 담당자가 쉽게 수정할 수 있습니다.
 
-const API_BASE = 'http://localhost:8080';
+const API_BASE = (window.API_BASE && window.API_BASE.trim()) || 'http://localhost:8080';
+window.API_BASE = API_BASE;
 const page = document.body.dataset.page;
 
 // 샘플 JD 텍스트는 데모/오프라인 환경에서 즉시 실행하도록 제공합니다.

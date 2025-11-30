@@ -55,8 +55,9 @@
             <p>JobRoadMap — 커리어 성장의 파트너</p>
         </footer>
     </div>
+    <script src="api-config.js"></script>
     <script>
-        const API_BASE = 'http://localhost:8080';
+        const API_BASE = (window.API_BASE && window.API_BASE.trim()) || 'http://localhost:8080';
         const params = new URLSearchParams(window.location.search);
         const postId = params.get('id');
         attachNav();

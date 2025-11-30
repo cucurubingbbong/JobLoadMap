@@ -1,0 +1,11 @@
+target
+data
+.git
+.gitignore
+.idea
+.vscode
+*.iml
+mvnw
+mvnw.cmd
+.mvn
+.maven
