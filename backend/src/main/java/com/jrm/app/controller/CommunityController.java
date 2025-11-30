@@ -33,6 +33,11 @@ public class CommunityController {
         if (email == null) {
             return ResponseEntity.status(401).build();
         }
+        try {
+            validatePayload(payload);
+        } catch (IllegalArgumentException ex) {
+            return ResponseEntity.status(413).body(null);
+        }
         String displayName = authService.getAccount(token) != null ? authService.getAccount(token).getUsername() : email;
         CommunityPost post = communityService.add(displayName,
                 email,
@@ -66,6 +71,11 @@ public class CommunityController {
         if (email == null) {
             return ResponseEntity.status(401).build();
         }
+        try {
+            validatePayload(payload);
+        } catch (IllegalArgumentException ex) {
+            return ResponseEntity.status(413).build();
+        }
         return communityService.update(
                         id,
                         email,
@@ -97,5 +107,21 @@ public class CommunityController {
         return communityService.addComment(id, email, author, payload.getOrDefault("content", ""))
                 .<ResponseEntity<?>>map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    private void validatePayload(Map<String, String> payload) {
+        String title = payload.getOrDefault("title", "");
+        String content = payload.getOrDefault("content", "");
+        String attachmentData = payload.get("attachmentData");
+        if (title.length() > 200) {
+            throw new IllegalArgumentException("제목은 200자 이내로 입력해주세요.");
+        }
+        if (content.length() > 20000) {
+            throw new IllegalArgumentException("내용이 너무 깁니다(20,000자 제한).");
+        }
+        // Base64 문자열 길이 제한 (약 750KB)
+        if (attachmentData != null && attachmentData.length() > 1_000_000) {
+            throw new IllegalArgumentException("첨부 용량이 초과되었습니다.");
+        }
     }
 }
