@@ -475,14 +475,24 @@ function initDashboard() {
         }
         setLoading(savedDiv, true);
         try {
-        const res = await fetch(`${API_BASE}/api/profile/roadmaps`, { headers: authHeaders(token) });
-        const json = await res.json();
-        savedData = Array.isArray(json) ? json : [];
-        if (!Array.isArray(json)) {
-            savedDiv.innerHTML = '<p class="empty">로드맵 데이터를 불러오지 못했습니다.</p>';
-            setLoading(savedDiv, false);
-            return;
-        }
+            const res = await fetch(`${API_BASE}/api/profile/roadmaps`, { headers: authHeaders(token) });
+            if (res.status === 401) {
+                savedDiv.innerHTML = '<p class="empty">로그인 세션이 만료되었습니다. 다시 로그인해주세요.</p>';
+                setLoading(savedDiv, false);
+                return;
+            }
+            if (!res.ok) {
+                savedDiv.innerHTML = `<p class="empty">로드맵을 불러오지 못했습니다. (code ${res.status})</p>`;
+                setLoading(savedDiv, false);
+                return;
+            }
+            const json = await res.json();
+            savedData = Array.isArray(json) ? json : [];
+            if (!Array.isArray(json)) {
+                savedDiv.innerHTML = '<p class="empty">로드맵 데이터를 불러오지 못했습니다.</p>';
+                setLoading(savedDiv, false);
+                return;
+            }
             savedDiv.classList.remove('empty');
             savedDiv.innerHTML = savedData.map(r => `
                 <div class="card saved-card${selectedRoadmap && selectedRoadmap.id === r.id ? ' active' : ''}" data-id="${r.id}">
