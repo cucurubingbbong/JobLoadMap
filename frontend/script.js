@@ -477,12 +477,14 @@ function initDashboard() {
         try {
             const res = await fetch(`${API_BASE}/api/profile/roadmaps`, { headers: authHeaders(token) });
             if (res.status === 401) {
+                localStorage.removeItem('token');
                 savedDiv.innerHTML = '<p class="empty">로그인 세션이 만료되었습니다. 다시 로그인해주세요.</p>';
                 setLoading(savedDiv, false);
                 return;
             }
             if (!res.ok) {
-                savedDiv.innerHTML = `<p class="empty">로드맵을 불러오지 못했습니다. (code ${res.status})</p>`;
+                const msg = await res.text().catch(() => '');
+                savedDiv.innerHTML = `<p class="empty">로드맵을 불러오지 못했습니다. (code ${res.status}${msg ? `, ${msg}` : ''})</p>`;
                 setLoading(savedDiv, false);
                 return;
             }
@@ -490,6 +492,11 @@ function initDashboard() {
             savedData = Array.isArray(json) ? json : [];
             if (!Array.isArray(json)) {
                 savedDiv.innerHTML = '<p class="empty">로드맵 데이터를 불러오지 못했습니다.</p>';
+                setLoading(savedDiv, false);
+                return;
+            }
+            if (savedData.length === 0) {
+                savedDiv.innerHTML = '<p class="empty">저장된 로드맵이 없습니다. 먼저 생성하고 저장해주세요.</p>';
                 setLoading(savedDiv, false);
                 return;
             }
@@ -553,7 +560,8 @@ function initDashboard() {
                 });
             });
         } catch (e) {
-            savedDiv.innerHTML = `<p class="empty">${e.message}</p>`;
+            savedDiv.innerHTML = `<p class="empty">로드맵을 불러오지 못했습니다. (네트워크 오류)</p>`;
+            console.error('loadSaved error', e);
         }
     }
 

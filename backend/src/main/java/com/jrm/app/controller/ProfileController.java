@@ -61,6 +61,7 @@ public class ProfileController {
     }
 
     @DeleteMapping("/roadmaps/{id}")
+    @org.springframework.transaction.annotation.Transactional
     public ResponseEntity<Void> delete(@RequestHeader("X-Auth-Token") String token,
                                        @PathVariable("id") String id) {
         String email = authService.getEmail(token);
