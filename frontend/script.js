@@ -949,7 +949,7 @@ function initCommunity() {
                 <span class="col actions">
                     ${myEmail && p.authorEmail === myEmail ? `
                         <div class="action-buttons">
-                            <a class="button ghost edit-post" href="community-edit.html?id=${p.id}">수정</a>
+                            <button class="ghost edit-post" type="button" data-id="${p.id}">수정</button>
                             <button class="ghost delete-post" data-id="${p.id}">삭제</button>
                         </div>
                     ` : ''}
