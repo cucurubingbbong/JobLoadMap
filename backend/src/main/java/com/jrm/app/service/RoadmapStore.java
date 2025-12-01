@@ -32,6 +32,7 @@ public class RoadmapStore {
         return toRecord(entity);
     }
 
+    @Transactional(readOnly = true)
     public List<RoadmapRecord> list(String email) {
         return roadmapRepository.findByEmailIgnoreCase(normalizeEmail(email)).stream()
                 .map(this::safeToRecord)
@@ -77,9 +78,10 @@ public class RoadmapStore {
         return entity.getShareToken();
     }
 
+    @Transactional(readOnly = true)
     public RoadmapRecord findByShareToken(String token) {
         return roadmapRepository.findByShareToken(token)
-                .map(this::toRecord)
+                .map(this::safeToRecord)
                 .orElse(null);
     }
 

@@ -23,8 +23,7 @@ public class RoadmapEntity {
     @Column(nullable = false)
     private LocalDate createdAt;
 
-    @Lob
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String roadmapJson;
 
     @Column(unique = true)
