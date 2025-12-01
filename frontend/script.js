@@ -475,8 +475,14 @@ function initDashboard() {
         }
         setLoading(savedDiv, true);
         try {
-            const res = await fetch(`${API_BASE}/api/profile/roadmaps`, { headers: authHeaders(token) });
-            savedData = await res.json();
+        const res = await fetch(`${API_BASE}/api/profile/roadmaps`, { headers: authHeaders(token) });
+        const json = await res.json();
+        savedData = Array.isArray(json) ? json : [];
+        if (!Array.isArray(json)) {
+            savedDiv.innerHTML = '<p class="empty">로드맵 데이터를 불러오지 못했습니다.</p>';
+            setLoading(savedDiv, false);
+            return;
+        }
             savedDiv.classList.remove('empty');
             savedDiv.innerHTML = savedData.map(r => `
                 <div class="card saved-card${selectedRoadmap && selectedRoadmap.id === r.id ? ' active' : ''}" data-id="${r.id}">
