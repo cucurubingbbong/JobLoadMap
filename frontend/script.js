@@ -894,6 +894,10 @@ function initCommunity() {
         const content = document.getElementById('postContent').value;
         const category = categorySelect ? categorySelect.value : '일반';
         const fileInput = document.getElementById('postFile');
+        if (!title.trim() || !content.trim()) {
+            document.getElementById('postStatus').textContent = '제목과 내용을 입력하세요.';
+            return;
+        }
         let attachmentName = null;
         let attachmentData = null;
         if (fileInput && fileInput.files && fileInput.files[0]) {
