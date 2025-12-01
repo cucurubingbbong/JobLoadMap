@@ -108,7 +108,7 @@ public class RoadmapStore {
     private RoadmapRecord safeToRecord(RoadmapEntity entity) {
         try {
             return toRecord(entity);
-        } catch (Exception ex) {
+        } catch (Throwable ex) {
             // Skip corrupted rows instead of throwing 500
             return null;
         }

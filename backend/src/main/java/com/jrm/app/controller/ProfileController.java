@@ -33,10 +33,15 @@ public class ProfileController {
         if (email == null) {
             return ResponseEntity.status(401).build();
         }
-        String title = payload.getTitle() == null ? "나의 로드맵" : payload.getTitle();
-        int progress = payload.getProgress() == null ? 0 : payload.getProgress();
-        RoadmapRecord record = roadmapStore.save(email, title, progress, payload.getRoadmap());
-        return ResponseEntity.ok(record);
+        try {
+            String title = payload.getTitle() == null ? "나의 로드맵" : payload.getTitle();
+            int progress = payload.getProgress() == null ? 0 : payload.getProgress();
+            RoadmapRecord record = roadmapStore.save(email, title, progress, payload.getRoadmap());
+            return ResponseEntity.ok(record);
+        } catch (Throwable ex) {
+            log.warn("로드맵 저장 실패, email={}", email, ex);
+            return ResponseEntity.status(500).build();
+        }
     }
 
     @GetMapping("/roadmaps")

@@ -355,11 +355,16 @@ async function saveRoadmap(data) {
     const titleInput = document.getElementById('saveTitle');
     const title = (titleInput && titleInput.value.trim()) ? titleInput.value.trim() : '나의 맞춤 로드맵';
     const payload = { title, progress: 0, roadmap: data };
-    await fetch(`${API_BASE}/api/profile/roadmaps`, {
+    const res = await fetch(`${API_BASE}/api/profile/roadmaps`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', ...authHeaders(token) },
         body: JSON.stringify(payload)
     });
+    if (!res.ok) {
+        const msg = await res.text().catch(() => '');
+        alert(`저장 실패 (code ${res.status}${msg ? `, ${msg}` : ''})`);
+        return;
+    }
     if (titleInput) titleInput.value = '';
     const statusEl = document.getElementById('formStatus');
     if (statusEl) statusEl.textContent = '저장되었습니다! 내 로드맵 페이지에서 확인하세요.';
