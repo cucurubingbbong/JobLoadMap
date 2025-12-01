@@ -847,6 +847,10 @@ function initCommunity() {
     const categorySelect = document.getElementById('postCategory');
     let filter = 'all';
     let myEmail = null;
+    let allPosts = [];
+    let filteredPosts = [];
+    let currentPage = 1;
+    const pageSize = 20;
 
     (async () => {
         const token = localStorage.getItem('token');
@@ -861,6 +865,19 @@ function initCommunity() {
     const refreshBtn = document.getElementById('refreshPosts');
     if (refreshBtn) refreshBtn.onclick = loadCommunity;
     document.getElementById('postSubmit').onclick = submitPost;
+    const searchBtn = document.getElementById('communitySearchBtn');
+    const searchInput = document.getElementById('communitySearchInput');
+    const searchField = document.getElementById('communitySearchField');
+    if (searchBtn) searchBtn.onclick = () => { currentPage = 1; applyFilters(); };
+    if (searchInput) {
+        searchInput.onkeypress = (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                currentPage = 1;
+                applyFilters();
+            }
+        };
+    }
 
     if (categoryTabs) {
         categoryTabs.querySelectorAll('button').forEach(btn => {
@@ -868,7 +885,8 @@ function initCommunity() {
                 categoryTabs.querySelectorAll('button').forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
                 filter = btn.dataset.tab;
-                loadCommunity();
+                currentPage = 1;
+                applyFilters();
             });
         });
     }
@@ -926,52 +944,8 @@ function initCommunity() {
         setLoading(postsDiv, true);
         const res = await fetch(`${API_BASE}/api/community/posts`);
         const data = await res.json();
-        const filtered = data.filter(p => {
-            if (filter === 'all') return true;
-            if (filter === 'notice') return p.category === '공지';
-            if (filter === 'general') return p.category === '일반';
-            if (filter === 'data') return p.category === '자료';
-            return true;
-        });
-        postsDiv.classList.remove('empty');
-        if (!filtered.length) {
-            postsDiv.innerHTML = '<p class="empty">등록된 글이 없습니다.</p>';
-            setLoading(postsDiv, false);
-            return;
-        }
-        postsDiv.innerHTML = filtered.map((p, idx) => `
-            <div class="board-row">
-                <span class="col num">${idx + 1}</span>
-                <span class="col category"><span class="badge cat">${p.category || '일반'}</span></span>
-                <span class="col title"><a href="community-post.html?id=${p.id}" target="_blank" data-id="${p.id}">${p.title}</a>${p.attachmentName ? ' 📎' : ''}</span>
-                <span class="col author">${p.author || p.authorEmail || '익명'}</span>
-                <span class="col date">${(p.createdAt || '').toString().split('T')[0] || ''}</span>
-                <span class="col actions">
-                    ${myEmail && p.authorEmail === myEmail ? `
-                        <div class="action-buttons">
-                            <button class="ghost edit-post" type="button" data-id="${p.id}">수정</button>
-                            <button class="ghost delete-post" data-id="${p.id}">삭제</button>
-                        </div>
-                    ` : ''}
-                </span>
-            </div>
-        `).join('');
-        // 제목을 클릭하면 새 탭에서 글과 댓글을 볼 수 있도록 안내만 표시
-        const detailBox = document.getElementById('postDetailContent');
-        if (detailBox) {
-            detailBox.innerHTML = '<p class="muted">제목을 클릭하면 새 탭에서 글과 댓글을 볼 수 있습니다.</p>';
-        }
-        postsDiv.querySelectorAll('.delete-post').forEach(btn => {
-            btn.addEventListener('click', () => deletePost(btn.dataset.id));
-        });
-        postsDiv.querySelectorAll('.edit-post').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const id = btn.dataset.id;
-                if (id) {
-                    window.location.href = `community-edit.html?id=${id}`;
-                }
-            });
-        });
+        allPosts = Array.isArray(data) ? data : [];
+        applyFilters();
         setLoading(postsDiv, false);
     }
 
@@ -998,6 +972,93 @@ function initCommunity() {
             <p>${post.content || ''}</p>
             ${post.attachmentName ? `<a href="${post.attachmentData}" download="${post.attachmentName}">첨부 다운로드</a>` : ''}
         `;
+    }
+
+    function applyFilters() {
+        filteredPosts = allPosts.filter(p => {
+            if (filter === 'all') return true;
+            if (filter === 'notice') return p.category === '공지';
+            if (filter === 'general') return p.category === '일반';
+            if (filter === 'data') return p.category === '자료';
+            return true;
+        });
+        const field = document.getElementById('communitySearchField')?.value || 'all';
+        const keyword = (document.getElementById('communitySearchInput')?.value || '').trim().toLowerCase();
+        if (keyword) {
+            filteredPosts = filteredPosts.filter(p => {
+                const title = (p.title || '').toLowerCase();
+                const content = (p.content || '').toLowerCase();
+                const author = ((p.author || p.authorEmail || '')).toLowerCase();
+                if (field === 'title') return title.includes(keyword);
+                if (field === 'content') return content.includes(keyword);
+                if (field === 'author') return author.includes(keyword);
+                return title.includes(keyword) || content.includes(keyword);
+            });
+        }
+        renderPage();
+        renderPagination();
+    }
+
+    function renderPage() {
+        postsDiv.classList.remove('empty');
+        if (!filteredPosts.length) {
+            postsDiv.innerHTML = '<p class="empty">등록된 글이 없습니다.</p>';
+            return;
+        }
+        const totalPages = Math.ceil(filteredPosts.length / pageSize) || 1;
+        if (currentPage > totalPages) currentPage = totalPages;
+        const start = (currentPage - 1) * pageSize;
+        const pageItems = filteredPosts.slice(start, start + pageSize);
+        postsDiv.innerHTML = pageItems.map((p, idx) => `
+            <div class="board-row">
+                <span class="col num">${start + idx + 1}</span>
+                <span class="col category"><span class="badge cat">${p.category || '일반'}</span></span>
+                <span class="col title"><a href="community-post.html?id=${p.id}" target="_blank" data-id="${p.id}">${p.title}</a>${p.attachmentName ? ' 📎' : ''}</span>
+                <span class="col author">${p.author || p.authorEmail || '익명'}</span>
+                <span class="col date">${(p.createdAt || '').toString().split('T')[0] || ''}</span>
+                <span class="col actions">
+                    ${myEmail && p.authorEmail === myEmail ? `
+                        <div class="action-buttons">
+                            <button class="ghost edit-post" type="button" data-id="${p.id}">수정</button>
+                            <button class="ghost delete-post" data-id="${p.id}">삭제</button>
+                        </div>
+                    ` : ''}
+                </span>
+            </div>
+        `).join('');
+        postsDiv.querySelectorAll('.delete-post').forEach(btn => {
+            btn.addEventListener('click', () => deletePost(btn.dataset.id));
+        });
+        postsDiv.querySelectorAll('.edit-post').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const id = btn.dataset.id;
+                if (id) {
+                    window.location.href = `community-edit.html?id=${id}`;
+                }
+            });
+        });
+        const detailBox = document.getElementById('postDetailContent');
+        if (detailBox) {
+            detailBox.innerHTML = '<p class="muted">제목을 클릭하면 새 탭에서 글과 댓글을 볼 수 있습니다.</p>';
+        }
+    }
+
+    function renderPagination() {
+        const pager = document.getElementById('communityPagination');
+        if (!pager) return;
+        const totalPages = Math.ceil(filteredPosts.length / pageSize) || 1;
+        pager.innerHTML = '';
+        for (let i = 1; i <= totalPages; i++) {
+            const btn = document.createElement('button');
+            btn.textContent = i;
+            if (i === currentPage) btn.classList.add('active');
+            btn.onclick = () => {
+                currentPage = i;
+                renderPage();
+                renderPagination();
+            };
+            pager.appendChild(btn);
+        }
     }
 }
 

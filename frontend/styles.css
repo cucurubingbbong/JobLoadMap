@@ -311,6 +311,11 @@ select {
     font-size: 14px;
 }
 
+.toggle-icon {
+    user-select: none;
+}
+
+
 textarea:focus,
 input:focus,
 select:focus {
@@ -740,13 +745,69 @@ select:focus {
     min-width: 72px;
     width: auto;
     padding: 10px 14px;
-    white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+    white-space: nowrap;
+    /* 텍스트 줄바꿈 방지 */
 }
 
 .action-buttons {
     display: flex;
     gap: 8px;
     align-items: center;
+}
+
+.board-filters {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 12px 12px;
+    border: 1px solid var(--line);
+    border-top: none;
+    background: #f9fbff;
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex: 1;
+}
+
+.search-bar select,
+.search-bar input {
+    height: 36px;
+    padding: 8px 10px;
+    border: 1px solid var(--line);
+    font-size: 14px;
+}
+
+.search-bar select {
+    min-width: 110px;
+}
+
+.search-bar input {
+    flex: 1;
+}
+
+.pagination {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.pagination button {
+    min-width: 28px;
+    height: 30px;
+    padding: 0 10px;
+    border: 1px solid var(--line);
+    background: #fff;
+    color: var(--text);
+}
+
+.pagination button.active {
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
 }
 
 .badge.cat {
@@ -1127,8 +1188,9 @@ footer {
     border-radius: 50%;
     background: var(--primary);
     border: 3px solid #fff;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.15);
-    margin-top: -5px; /* center thumb on track */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+    margin-top: -5px;
+    /* center thumb on track */
 }
 
 .range-slider::-moz-range-track {
@@ -1143,7 +1205,7 @@ footer {
     border-radius: 50%;
     background: var(--primary);
     border: 3px solid #fff;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
 }
 
 .range-labels {
