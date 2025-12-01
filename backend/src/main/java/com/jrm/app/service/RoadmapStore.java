@@ -33,7 +33,7 @@ public class RoadmapStore {
     }
 
     public List<RoadmapRecord> list(String email) {
-        return roadmapRepository.findByEmail(normalizeEmail(email)).stream()
+        return roadmapRepository.findByEmailIgnoreCase(normalizeEmail(email)).stream()
                 .map(this::safeToRecord)
                 .filter(java.util.Objects::nonNull)
                 .collect(Collectors.toList());
@@ -41,7 +41,7 @@ public class RoadmapStore {
 
     @Transactional
     public RoadmapRecord updateProgress(String email, String recordId, int progress) {
-        Optional<RoadmapEntity> entityOpt = roadmapRepository.findByIdAndEmail(recordId, email);
+        Optional<RoadmapEntity> entityOpt = roadmapRepository.findByIdAndEmailIgnoreCase(recordId, normalizeEmail(email));
         if (entityOpt.isEmpty()) return null;
         RoadmapEntity entity = entityOpt.get();
         entity.setProgress(progress);
@@ -51,13 +51,13 @@ public class RoadmapStore {
 
     @Transactional
     public boolean delete(String email, String recordId) {
-        Optional<RoadmapEntity> entityOpt = roadmapRepository.findByIdAndEmail(recordId, email);
+        Optional<RoadmapEntity> entityOpt = roadmapRepository.findByIdAndEmailIgnoreCase(recordId, normalizeEmail(email));
         if (entityOpt.isPresent()) {
             roadmapRepository.delete(entityOpt.get());
             return true;
         }
         // fallback in case the entity was not loaded but exists
-        boolean exists = roadmapRepository.existsByIdAndEmail(recordId, email);
+        boolean exists = roadmapRepository.existsByIdAndEmail(recordId, normalizeEmail(email));
         if (exists) {
             roadmapRepository.deleteById(recordId);
             return true;
@@ -67,7 +67,7 @@ public class RoadmapStore {
 
     @Transactional
     public String share(String email, String recordId) {
-        Optional<RoadmapEntity> entityOpt = roadmapRepository.findByIdAndEmail(recordId, email);
+        Optional<RoadmapEntity> entityOpt = roadmapRepository.findByIdAndEmailIgnoreCase(recordId, normalizeEmail(email));
         if (entityOpt.isEmpty()) return null;
         RoadmapEntity entity = entityOpt.get();
         if (entity.getShareToken() == null || entity.getShareToken().isBlank()) {

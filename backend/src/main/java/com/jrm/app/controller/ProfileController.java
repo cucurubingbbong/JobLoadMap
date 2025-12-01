@@ -40,7 +40,7 @@ public class ProfileController {
             return ResponseEntity.ok(record);
         } catch (Throwable ex) {
             log.warn("로드맵 저장 실패, email={}", email, ex);
-            return ResponseEntity.status(500).build();
+            return ResponseEntity.status(500).body(null);
         }
     }
 
