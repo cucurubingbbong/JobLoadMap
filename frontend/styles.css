@@ -719,6 +719,13 @@ select:focus {
     border-bottom: 1px solid var(--line);
 }
 
+.board-row .actions {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+    align-items: center;
+}
+
 .board-row:last-child {
     border-bottom: none;
 }
@@ -730,8 +737,14 @@ select:focus {
 
 .board-row .actions button {
     margin-right: 0;
-    width: 80px;
+    width: 70px;
     white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+}
+
+.action-buttons {
+    display: flex;
+    gap: 8px;
+    align-items: center;
 }
 
 .badge.cat {
