@@ -964,6 +964,14 @@ function initCommunity() {
         postsDiv.querySelectorAll('.delete-post').forEach(btn => {
             btn.addEventListener('click', () => deletePost(btn.dataset.id));
         });
+        postsDiv.querySelectorAll('.edit-post').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const id = btn.dataset.id;
+                if (id) {
+                    window.location.href = `community-edit.html?id=${id}`;
+                }
+            });
+        });
         setLoading(postsDiv, false);
     }
 
