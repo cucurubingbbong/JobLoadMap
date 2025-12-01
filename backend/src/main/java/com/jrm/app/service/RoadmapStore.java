@@ -26,14 +26,14 @@ public class RoadmapStore {
 
     @Transactional
     public RoadmapRecord save(String email, String title, int progress, RoadmapResponse roadmap) {
-        String json = toJson(roadmap);
-        RoadmapEntity entity = new RoadmapEntity(email, title, progress, json);
+        String json = toJson(roadmap == null ? new RoadmapResponse() : roadmap);
+        RoadmapEntity entity = new RoadmapEntity(normalizeEmail(email), title, progress, json);
         roadmapRepository.save(entity);
         return toRecord(entity);
     }
 
     public List<RoadmapRecord> list(String email) {
-        return roadmapRepository.findByEmail(email).stream()
+        return roadmapRepository.findByEmail(normalizeEmail(email)).stream()
                 .map(this::safeToRecord)
                 .filter(java.util.Objects::nonNull)
                 .collect(Collectors.toList());
@@ -98,6 +98,7 @@ public class RoadmapStore {
 
     private RoadmapResponse fromJson(String json) {
         try {
+            if (json == null || json.isBlank()) return new RoadmapResponse();
             return objectMapper.readValue(json, RoadmapResponse.class);
         } catch (IOException e) {
             return new RoadmapResponse();
@@ -111,5 +112,9 @@ public class RoadmapStore {
             // Skip corrupted rows instead of throwing 500
             return null;
         }
+    }
+
+    private String normalizeEmail(String email) {
+        return email == null ? null : email.trim().toLowerCase();
     }
 }

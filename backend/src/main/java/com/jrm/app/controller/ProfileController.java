@@ -4,6 +4,8 @@ import com.jrm.app.model.RoadmapRecord;
 import com.jrm.app.model.SaveRoadmapRequest;
 import com.jrm.app.service.AuthService;
 import com.jrm.app.service.RoadmapStore;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,6 +16,8 @@ import java.util.Map;
 @RequestMapping("/api/profile")
 @CrossOrigin(origins = "*", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PATCH, RequestMethod.DELETE})
 public class ProfileController {
+    private static final Logger log = LoggerFactory.getLogger(ProfileController.class);
+
     private final AuthService authService;
     private final RoadmapStore roadmapStore;
 
@@ -41,7 +45,12 @@ public class ProfileController {
         if (email == null) {
             return ResponseEntity.status(401).build();
         }
-        return ResponseEntity.ok(roadmapStore.list(email));
+        try {
+            return ResponseEntity.ok(roadmapStore.list(email));
+        } catch (Throwable ex) { // OOM 등도 500으로 보내지 않고 빈 배열로
+            log.warn("로드맵 목록 조회 실패, email={}", email, ex);
+            return ResponseEntity.ok(java.util.Collections.emptyList());
+        }
     }
 
     @PatchMapping("/roadmaps/{id}/progress")
