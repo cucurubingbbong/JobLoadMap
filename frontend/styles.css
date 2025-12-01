@@ -730,7 +730,8 @@ select:focus {
 
 .board-row .actions button {
     margin-right: 0;
-    width: 64px;
+    width: 80px;
+    white-space: nowrap; /* 텍스트 줄바꿈 방지 */
 }
 
 .badge.cat {
