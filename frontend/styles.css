@@ -737,7 +737,9 @@ select:focus {
 
 .board-row .actions button {
     margin-right: 0;
-    width: 70px;
+    min-width: 72px;
+    width: auto;
+    padding: 10px 14px;
     white-space: nowrap; /* 텍스트 줄바꿈 방지 */
 }
 
