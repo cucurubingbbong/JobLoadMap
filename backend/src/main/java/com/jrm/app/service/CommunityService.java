@@ -38,7 +38,7 @@ public class CommunityService {
 
     @Transactional
     public CommunityPost add(String author, String authorEmail, String title, String content, String category, String attachmentName, String attachmentData) {
-        CommunityPostEntity entity = new CommunityPostEntity(author, authorEmail, title, content, category, attachmentName, attachmentData);
+        CommunityPostEntity entity = new CommunityPostEntity(author, normalizeEmail(authorEmail), title, content, category, attachmentName, attachmentData);
         postRepository.save(entity);
         return toModel(entity);
     }
@@ -51,7 +51,7 @@ public class CommunityService {
     public boolean delete(String id, String requesterEmail) {
         Optional<CommunityPostEntity> found = postRepository.findById(id);
         if (found.isEmpty()) return false;
-        if (!found.get().getAuthorEmail().equals(requesterEmail)) return false;
+        if (!equalsEmail(found.get().getAuthorEmail(), requesterEmail)) return false;
         postRepository.delete(found.get());
         return true;
     }
@@ -61,7 +61,7 @@ public class CommunityService {
         Optional<CommunityPostEntity> found = postRepository.findById(id);
         if (found.isEmpty()) return Optional.empty();
         CommunityPostEntity entity = found.get();
-        if (!entity.getAuthorEmail().equals(requesterEmail)) return Optional.empty();
+        if (!equalsEmail(entity.getAuthorEmail(), requesterEmail)) return Optional.empty();
         if (title != null) entity.setTitle(title);
         if (content != null) entity.setContent(content);
         if (category != null) entity.setCategory(category);
@@ -106,5 +106,14 @@ public class CommunityService {
             createdAtField.set(c, e.getCreatedAt());
         } catch (Exception ignored) {}
         return c;
+    }
+
+    private String normalizeEmail(String email) {
+        return email == null ? null : email.trim().toLowerCase();
+    }
+
+    private boolean equalsEmail(String a, String b) {
+        if (a == null || b == null) return false;
+        return normalizeEmail(a).equals(normalizeEmail(b));
     }
 }

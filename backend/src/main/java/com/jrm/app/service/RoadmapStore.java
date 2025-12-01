@@ -34,7 +34,8 @@ public class RoadmapStore {
 
     public List<RoadmapRecord> list(String email) {
         return roadmapRepository.findByEmail(email).stream()
-                .map(this::toRecord)
+                .map(this::safeToRecord)
+                .filter(java.util.Objects::nonNull)
                 .collect(Collectors.toList());
     }
 
@@ -100,6 +101,15 @@ public class RoadmapStore {
             return objectMapper.readValue(json, RoadmapResponse.class);
         } catch (IOException e) {
             return new RoadmapResponse();
+        }
+    }
+
+    private RoadmapRecord safeToRecord(RoadmapEntity entity) {
+        try {
+            return toRecord(entity);
+        } catch (Exception ex) {
+            // Skip corrupted rows instead of throwing 500
+            return null;
         }
     }
 }

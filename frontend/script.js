@@ -902,6 +902,11 @@ function initCommunity() {
                 body: JSON.stringify({ title, content, category, attachmentName, attachmentData })
             });
             document.getElementById('postStatus').textContent = '등록 완료';
+            // 입력값 초기화
+            document.getElementById('postTitle').value = '';
+            document.getElementById('postContent').value = '';
+            if (fileInput) fileInput.value = '';
+            if (categorySelect) categorySelect.value = '일반';
             loadCommunity();
         } catch (e) {
             document.getElementById('postStatus').textContent = '등록 실패';
